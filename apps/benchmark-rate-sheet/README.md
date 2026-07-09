@@ -13,9 +13,10 @@ the rest of the repo — treat it as an independent project with its own
 ## Stack
 
 React + TypeScript + Vite, Tailwind CSS v4, Recharts (charts), SheetJS/`xlsx`
-(Excel export), `jspdf` + `jspdf-autotable` (PDF export), `pdfjs-dist` (PDF
-text extraction for scope-of-work import). All estimate data, scenarios, bid
-history, settings, and the productivity library persist to `localStorage`.
+(Excel export), `jspdf` + `jspdf-autotable` (PDF export), `pdfjs-dist` +
+`mammoth` (PDF/DOCX text extraction for scope-of-work import). All estimate
+data, scenarios, bid history, settings, and the productivity library persist
+to `localStorage`.
 
 ## Features
 
@@ -35,15 +36,37 @@ history, settings, and the productivity library persist to `localStorage`.
 - **Export** — Excel workbook, professional PDF quote, internal cost
   breakdown PDF, printable proposal summary, and settings/full-backup JSON
   import/export.
-- **Scope of Work import** — upload a PDF (RFP/solicitation/SOW); the app
-  extracts its text client-side and heuristically matches customer, agency,
-  contract number/type, building name/address/type, square footage,
-  frequency, term, and start date. Every match is shown with the exact text
-  it was pulled from and a checkbox — nothing is written to the estimate
-  until you review and apply it. This is plain text/regex matching, not an
-  LLM call (the app has no backend), so it works best on text-based PDFs
-  with reasonably conventional labeling and will find nothing useful on a
-  scanned image without selectable text.
+- **Scope of Work import** — upload a PDF, DOCX, or TXT (RFP/solicitation/
+  SOW); text is extracted entirely client-side and matched against two
+  tiers of fields:
+  - *Fields to apply* — customer/contact info, agency, contract number/type,
+    building name/address/type, square footage, floors, frequency, term,
+    start date, required employee count, supplies provider (government vs.
+    contractor), and detected specialty services (carpet, floor care,
+    pressure washing, etc. with their stated frequency). Each has a
+    confidence badge (green = clearly labeled, yellow = please confirm) and
+    a checkbox — nothing is written to the estimate until you review and
+    click **Generate Bid Estimate**.
+  - *Detected requirements & context* — solicitation number, period of
+    performance, bid due date, staffing/certifications, background
+    check/security clearance/insurance/bond requirements, scope task
+    checklist. Shown for awareness only, never auto-applied to pricing.
+
+  Generating an estimate also auto-saves it as an "AI Recommended" scenario
+  (Scenarios tab) so later manual adjustments can be compared against the
+  as-imported numbers, and populates a **Bid Analysis Summary** card (labor
+  hours/week, monthly cost, recommended bid, margin, risk factors) shown in
+  the Estimator and included in the Internal Cost Breakdown PDF export.
+
+  This is plain text/regex matching, not an LLM call (the app has no
+  backend and needs none — there's nothing to call out to), so it works
+  best on text-based documents with reasonably conventional labeling and
+  will find nothing useful on a scanned image without selectable text.
+- **Pricing insights** — Bid History now tracks building type per bid and
+  surfaces descriptive stats (not a prediction/ML model) per building type:
+  win rate, average realized margin, and won price/sq ft range. The
+  Estimator shows a live comparison when your current building type has won
+  history to compare against.
 - Light/dark mode, responsive layout.
 
 ## Development

@@ -62,5 +62,6 @@ export function parseFullBackupJson(text: string): AppData {
     scenarios: data.scenarios ?? [],
     bids: data.bids ?? [],
     theme: data.theme === 'dark' ? 'dark' : 'light',
+    riskNotes: data.riskNotes ?? [],
   }
 }

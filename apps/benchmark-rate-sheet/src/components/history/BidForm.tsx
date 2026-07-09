@@ -3,7 +3,13 @@ import { useAppState } from '../../context/AppStateContext'
 import { TextField } from '../inputs/TextField'
 import { NumberField } from '../inputs/NumberField'
 import { Select } from '../inputs/Select'
-import { FREQUENCY_LABELS, type BidStatus, type CleaningFrequency } from '../../types'
+import {
+  BUILDING_TYPE_LABELS,
+  FREQUENCY_LABELS,
+  type BidStatus,
+  type BuildingType,
+  type CleaningFrequency,
+} from '../../types'
 import { Plus } from 'lucide-react'
 
 const STATUS_OPTIONS: { value: BidStatus; label: string }[] = [
@@ -17,6 +23,7 @@ const emptyForm = {
   agency: '',
   date: new Date().toISOString().slice(0, 10),
   squareFootage: 10000,
+  buildingType: 'office' as BuildingType,
   frequency: '5x_week' as CleaningFrequency,
   finalPrice: 0,
   cost: 0,
@@ -56,6 +63,12 @@ export function BidForm() {
           value={form.squareFootage}
           min={0}
           onChange={(v) => setForm({ ...form, squareFootage: v })}
+        />
+        <Select
+          label="Building Type"
+          value={form.buildingType}
+          options={Object.entries(BUILDING_TYPE_LABELS).map(([value, label]) => ({ value, label }))}
+          onChange={(v) => setForm({ ...form, buildingType: v as BuildingType })}
         />
         <NumberField
           label="Final Price"

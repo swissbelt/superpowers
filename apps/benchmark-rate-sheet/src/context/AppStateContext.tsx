@@ -33,6 +33,7 @@ function defaultAppData(): AppData {
     scenarios: [],
     bids: [],
     theme: 'light',
+    riskNotes: [],
   }
 }
 
@@ -51,6 +52,7 @@ interface AppStateValue {
   removeBid: (id: string) => void
   setTheme: (theme: 'light' | 'dark') => void
   replaceData: (data: AppData) => void
+  setRiskNotes: (notes: string[]) => void
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null)
@@ -78,7 +80,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setCurrentInputs: (updater) =>
       setData((prev) => ({ ...prev, currentInputs: updater(prev.currentInputs) })),
     resetCurrentInputs: () =>
-      setData((prev) => ({ ...prev, currentInputs: defaultEstimateInputs() })),
+      setData((prev) => ({ ...prev, currentInputs: defaultEstimateInputs(), riskNotes: [] })),
     setSettings: (updater) =>
       setData((prev) => ({ ...prev, settings: updater(prev.settings) })),
     setProductivity: (updater) =>
@@ -124,6 +126,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setData((prev) => ({ ...prev, bids: prev.bids.filter((b) => b.id !== id) })),
     setTheme: (theme) => setData((prev) => ({ ...prev, theme })),
     replaceData: (next) => setData(next),
+    setRiskNotes: (notes) => setData((prev) => ({ ...prev, riskNotes: notes })),
   }
 
   return (

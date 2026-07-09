@@ -71,6 +71,7 @@ export function exportBidHistoryWorkbook(data: AppData, fileName = 'benchmark-bi
     Agency: b.agency,
     Date: b.date,
     'Square Footage': b.squareFootage,
+    'Building Type': b.buildingType ? BUILDING_TYPE_LABELS[b.buildingType] : '',
     Frequency: FREQUENCY_LABELS[b.frequency],
     'Final Price': b.finalPrice,
     Cost: b.cost,

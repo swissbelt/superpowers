@@ -1,5 +1,5 @@
 import { useAppState } from '../../context/AppStateContext'
-import { FREQUENCY_LABELS, type BidStatus } from '../../types'
+import { BUILDING_TYPE_LABELS, FREQUENCY_LABELS, type BidStatus } from '../../types'
 import { formatCurrency } from '../../lib/format'
 import { Trash2 } from 'lucide-react'
 
@@ -29,6 +29,7 @@ export function BidTable() {
             <th className="px-4 py-3">Agency</th>
             <th className="px-4 py-3">Date</th>
             <th className="px-4 py-3">Sq Ft</th>
+            <th className="px-4 py-3">Building Type</th>
             <th className="px-4 py-3">Frequency</th>
             <th className="px-4 py-3">Price</th>
             <th className="px-4 py-3">Cost</th>
@@ -45,6 +46,9 @@ export function BidTable() {
               <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{b.agency}</td>
               <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{b.date}</td>
               <td className="px-4 py-2.5 font-mono">{b.squareFootage.toLocaleString()}</td>
+              <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">
+                {b.buildingType ? BUILDING_TYPE_LABELS[b.buildingType] : '—'}
+              </td>
               <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">
                 {FREQUENCY_LABELS[b.frequency]}
               </td>

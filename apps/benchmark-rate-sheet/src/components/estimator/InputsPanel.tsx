@@ -253,19 +253,26 @@ export function InputsPanel() {
               }
             />
             {service.enabled && (
-              <NumberField
-                label="Monthly Cost"
-                value={service.costPerMonth}
-                min={0}
-                prefix="$"
-                onChange={(v) =>
-                  update({
-                    specialtyServices: inputs.specialtyServices.map((s) =>
-                      s.id === service.id ? { ...s, costPerMonth: v } : s,
-                    ),
-                  })
-                }
-              />
+              <>
+                {service.detectedFrequencyLabel && (
+                  <p className="rounded-md bg-indigo-50 px-2 py-1 text-xs text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+                    Detected frequency: {service.detectedFrequencyLabel} — enter a monthly-equivalent cost below.
+                  </p>
+                )}
+                <NumberField
+                  label="Monthly Cost"
+                  value={service.costPerMonth}
+                  min={0}
+                  prefix="$"
+                  onChange={(v) =>
+                    update({
+                      specialtyServices: inputs.specialtyServices.map((s) =>
+                        s.id === service.id ? { ...s, costPerMonth: v } : s,
+                      ),
+                    })
+                  }
+                />
+              </>
             )}
           </div>
         ))}

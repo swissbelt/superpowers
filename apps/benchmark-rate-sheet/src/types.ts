@@ -58,6 +58,8 @@ export interface SpecialtyService {
   name: string
   enabled: boolean
   costPerMonth: number
+  /** Human-readable service frequency detected from an imported document (e.g. "Quarterly"), display-only. */
+  detectedFrequencyLabel?: string
 }
 
 export interface CustomerInfo {
@@ -161,6 +163,7 @@ export interface Bid {
   agency: string
   date: string
   squareFootage: number
+  buildingType: BuildingType
   frequency: CleaningFrequency
   finalPrice: number
   cost: number
@@ -176,4 +179,6 @@ export interface AppData {
   scenarios: Scenario[]
   bids: Bid[]
   theme: 'light' | 'dark'
+  /** Risk/requirement notes detected from the last imported scope-of-work document. */
+  riskNotes: string[]
 }

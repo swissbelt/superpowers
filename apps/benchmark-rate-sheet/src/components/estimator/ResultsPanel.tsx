@@ -3,6 +3,8 @@ import { useAppState } from '../../context/AppStateContext'
 import { ResultCard } from './ResultCard'
 import { MarginGauge } from './MarginGauge'
 import { ProgressBar } from './ProgressBar'
+import { BidAnalysisSummary } from './BidAnalysisSummary'
+import { computeBuildingTypeInsights } from '../../lib/pricingInsights'
 import { formatCurrency, formatNumber, formatPercent } from '../../lib/format'
 import {
   Clock,
@@ -28,6 +30,10 @@ export function ResultsPanel() {
   const [savedFlash, setSavedFlash] = useState(false)
 
   const nextScenarioLetter = String.fromCharCode(65 + (data.scenarios.length % 26))
+
+  const historicalInsight = computeBuildingTypeInsights(data.bids).find(
+    (i) => i.buildingType === data.currentInputs.building.buildingType && i.wonCount > 0,
+  )
 
   const handleSave = () => {
     const label = scenarioName.trim() || `Scenario ${nextScenarioLetter}`
@@ -71,6 +77,14 @@ export function ResultsPanel() {
                 {formatCurrency(results.profitPerVisit)}
               </span>
             </p>
+            {historicalInsight && (
+              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                Your past won bids for this building type priced{' '}
+                {formatCurrency(historicalInsight.minPricePerSqFt, 3)}–
+                {formatCurrency(historicalInsight.maxPricePerSqFt, 3)}/sq ft — this estimate is{' '}
+                {formatCurrency(results.pricePerSquareFoot, 3)}/sq ft.
+              </p>
+            )}
           </div>
           <MarginGauge
             marginPercent={results.grossMarginPercent}
@@ -78,6 +92,8 @@ export function ResultsPanel() {
           />
         </div>
       </div>
+
+      <BidAnalysisSummary />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <ResultCard

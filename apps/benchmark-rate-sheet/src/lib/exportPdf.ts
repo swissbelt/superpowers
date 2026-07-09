@@ -107,6 +107,7 @@ export function generateInternalCostBreakdownPdf(
   inputs: EstimateInputs,
   results: EstimateResults,
   settings: Settings,
+  riskNotes: string[] = [],
 ) {
   const doc = new jsPDF()
   let y = drawHeader(doc, 'Internal Cost Breakdown (Confidential)')
@@ -156,6 +157,18 @@ export function generateInternalCostBreakdownPdf(
     headStyles: { fillColor: [71, 85, 105] },
     styles: { fontSize: 9 },
   })
+
+  if (riskNotes.length > 0) {
+    const afterAssumptions = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8
+    autoTable(doc, {
+      startY: afterAssumptions,
+      head: [['Risk Factors']],
+      body: riskNotes.map((note) => [note]),
+      theme: 'striped',
+      headStyles: { fillColor: [180, 83, 9] },
+      styles: { fontSize: 9 },
+    })
+  }
 
   drawFooter(doc)
   doc.save('benchmark-internal-cost-breakdown.pdf')

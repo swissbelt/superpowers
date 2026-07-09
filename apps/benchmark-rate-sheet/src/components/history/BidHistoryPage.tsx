@@ -2,6 +2,7 @@ import { useAppState } from '../../context/AppStateContext'
 import { BidForm } from './BidForm'
 import { BidTable } from './BidTable'
 import { BidCharts } from './BidCharts'
+import { PricingInsights } from './PricingInsights'
 import { exportBidHistoryWorkbook } from '../../lib/exportExcel'
 import { FileSpreadsheet } from 'lucide-react'
 
@@ -28,6 +29,7 @@ export function BidHistoryPage() {
       </div>
 
       <BidCharts />
+      <PricingInsights />
       <BidForm />
       <BidTable />
     </div>

@@ -35,7 +35,8 @@ export function ExportMenu() {
     {
       label: 'Internal Cost Breakdown',
       icon: <ClipboardList size={15} />,
-      action: () => generateInternalCostBreakdownPdf(data.currentInputs, results, data.settings),
+      action: () =>
+        generateInternalCostBreakdownPdf(data.currentInputs, results, data.settings, data.riskNotes ?? []),
     },
     {
       label: 'Printable Proposal Summary',
