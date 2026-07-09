@@ -11,5 +11,13 @@ export default defineConfig({
     outDir: 'dist-artifact',
     cssCodeSplit: false,
     assetsInlineLimit: 100000000,
+    target: 'es2018',
+    modulePreload: false,
+    rollupOptions: {
+      output: {
+        format: 'iife',
+        inlineDynamicImports: true,
+      },
+    },
   },
 })
