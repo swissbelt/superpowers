@@ -13,9 +13,9 @@ the rest of the repo — treat it as an independent project with its own
 ## Stack
 
 React + TypeScript + Vite, Tailwind CSS v4, Recharts (charts), SheetJS/`xlsx`
-(Excel export), `jspdf` + `jspdf-autotable` (PDF export). All estimate data,
-scenarios, bid history, settings, and the productivity library persist to
-`localStorage`.
+(Excel export), `jspdf` + `jspdf-autotable` (PDF export), `pdfjs-dist` (PDF
+text extraction for scope-of-work import). All estimate data, scenarios, bid
+history, settings, and the productivity library persist to `localStorage`.
 
 ## Features
 
@@ -35,6 +35,15 @@ scenarios, bid history, settings, and the productivity library persist to
 - **Export** — Excel workbook, professional PDF quote, internal cost
   breakdown PDF, printable proposal summary, and settings/full-backup JSON
   import/export.
+- **Scope of Work import** — upload a PDF (RFP/solicitation/SOW); the app
+  extracts its text client-side and heuristically matches customer, agency,
+  contract number/type, building name/address/type, square footage,
+  frequency, term, and start date. Every match is shown with the exact text
+  it was pulled from and a checkbox — nothing is written to the estimate
+  until you review and apply it. This is plain text/regex matching, not an
+  LLM call (the app has no backend), so it works best on text-based PDFs
+  with reasonably conventional labeling and will find nothing useful on a
+  scanned image without selectable text.
 - Light/dark mode, responsive layout.
 
 ## Development

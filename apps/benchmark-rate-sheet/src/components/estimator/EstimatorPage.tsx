@@ -2,6 +2,7 @@ import { useAppState } from '../../context/AppStateContext'
 import { InputsPanel } from './InputsPanel'
 import { ResultsPanel } from './ResultsPanel'
 import { ExportMenu } from '../export/ExportMenu'
+import { ImportScopeOfWork } from './ImportScopeOfWork'
 import { RotateCcw } from 'lucide-react'
 
 export function EstimatorPage() {
@@ -17,6 +18,7 @@ export function EstimatorPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <ImportScopeOfWork />
           <button
             onClick={() => {
               if (confirm('Reset all inputs to defaults?')) resetCurrentInputs()
