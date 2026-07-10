@@ -77,6 +77,7 @@ export function ImportScopeOfWork() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const [progress, setProgress] = useState<{ page: number; totalPages: number } | null>(null)
   const [extraction, setExtraction] = useState<ScopeOfWorkExtraction | null>(null)
   const [selected, setSelected] = useState<Partial<Record<ApplicableKey, boolean>>>({})
 
@@ -94,8 +95,9 @@ export function ImportScopeOfWork() {
   const handleFile = async (file: File) => {
     setStatus('loading')
     setErrorMessage('')
+    setProgress(null)
     try {
-      const text = await extractDocumentText(file)
+      const text = await extractDocumentText(file, (p) => setProgress(p))
       const fields = extractScopeOfWorkFields(text)
       const foundCount =
         Object.values(fields.applicable).filter(Boolean).length +
@@ -181,7 +183,11 @@ export function ImportScopeOfWork() {
         className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
       >
         {status === 'loading' ? <Loader2 size={15} className="animate-spin" /> : <FileUp size={15} />}
-        Upload Scope of Work
+        {status === 'loading'
+          ? progress
+            ? `Reading page ${progress.page} of ${progress.totalPages}…`
+            : 'Reading document…'
+          : 'Upload Scope of Work'}
       </button>
       <input
         ref={fileInputRef}
