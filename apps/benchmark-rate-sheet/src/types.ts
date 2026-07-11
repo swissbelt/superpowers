@@ -181,4 +181,6 @@ export interface AppData {
   theme: 'light' | 'dark'
   /** Risk/requirement notes detected from the last imported scope-of-work document. */
   riskNotes: string[]
+  /** Non-risk scope/context notes (tasks, staffing, hours) detected from the last imported document. */
+  scopeNotes: string[]
 }

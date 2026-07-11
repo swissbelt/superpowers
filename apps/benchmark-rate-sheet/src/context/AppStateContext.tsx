@@ -34,6 +34,7 @@ function defaultAppData(): AppData {
     bids: [],
     theme: 'light',
     riskNotes: [],
+    scopeNotes: [],
   }
 }
 
@@ -53,6 +54,7 @@ interface AppStateValue {
   setTheme: (theme: 'light' | 'dark') => void
   replaceData: (data: AppData) => void
   setRiskNotes: (notes: string[]) => void
+  setScopeNotes: (notes: string[]) => void
 }
 
 const AppStateContext = createContext<AppStateValue | null>(null)
@@ -80,7 +82,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setCurrentInputs: (updater) =>
       setData((prev) => ({ ...prev, currentInputs: updater(prev.currentInputs) })),
     resetCurrentInputs: () =>
-      setData((prev) => ({ ...prev, currentInputs: defaultEstimateInputs(), riskNotes: [] })),
+      setData((prev) => ({
+        ...prev,
+        currentInputs: defaultEstimateInputs(),
+        riskNotes: [],
+        scopeNotes: [],
+      })),
     setSettings: (updater) =>
       setData((prev) => ({ ...prev, settings: updater(prev.settings) })),
     setProductivity: (updater) =>
@@ -127,6 +134,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setTheme: (theme) => setData((prev) => ({ ...prev, theme })),
     replaceData: (next) => setData(next),
     setRiskNotes: (notes) => setData((prev) => ({ ...prev, riskNotes: notes })),
+    setScopeNotes: (notes) => setData((prev) => ({ ...prev, scopeNotes: notes })),
   }
 
   return (

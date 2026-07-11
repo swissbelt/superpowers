@@ -30,7 +30,7 @@ export function ExportMenu() {
     {
       label: 'Professional PDF Quote',
       icon: <FileText size={15} />,
-      action: () => generateQuotePdf(data.currentInputs, results),
+      action: () => generateQuotePdf(data.currentInputs, results, data.scopeNotes ?? []),
     },
     {
       label: 'Internal Cost Breakdown',

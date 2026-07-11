@@ -4,6 +4,7 @@ import { ResultCard } from './ResultCard'
 import { MarginGauge } from './MarginGauge'
 import { ProgressBar } from './ProgressBar'
 import { BidAnalysisSummary } from './BidAnalysisSummary'
+import { JobSummary } from './JobSummary'
 import { computeBuildingTypeInsights } from '../../lib/pricingInsights'
 import { formatCurrency, formatNumber, formatPercent } from '../../lib/format'
 import {
@@ -92,6 +93,8 @@ export function ResultsPanel() {
           />
         </div>
       </div>
+
+      <JobSummary />
 
       <BidAnalysisSummary />
 

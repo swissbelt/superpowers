@@ -3,6 +3,7 @@ import { useAppState } from '../../context/AppStateContext'
 import { extractDocumentText } from '../../lib/documentText'
 import {
   buildRiskNotes,
+  buildScopeNotes,
   extractScopeOfWorkFields,
   type ApplicableFields,
   type ContextualFields,
@@ -73,7 +74,7 @@ function displayContextualValue(value: unknown): string {
 }
 
 export function ImportScopeOfWork() {
-  const { setCurrentInputs, saveScenario, setRiskNotes } = useAppState()
+  const { setCurrentInputs, saveScenario, setRiskNotes, setScopeNotes } = useAppState()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -172,6 +173,7 @@ export function ImportScopeOfWork() {
     })
     saveScenario(`AI Recommended — ${applicable.facilityName?.value ?? applicable.customerName?.value ?? 'Import'}`)
     setRiskNotes(buildRiskNotes(extraction))
+    setScopeNotes(buildScopeNotes(extraction))
     setExtraction(null)
   }
 

@@ -35,7 +35,11 @@ function drawFooter(doc: jsPDF) {
   }
 }
 
-export function generateQuotePdf(inputs: EstimateInputs, results: EstimateResults) {
+export function generateQuotePdf(
+  inputs: EstimateInputs,
+  results: EstimateResults,
+  scopeNotes: string[] = [],
+) {
   const doc = new jsPDF()
   let y = drawHeader(doc, 'Cleaning Services Quote')
 
@@ -72,7 +76,28 @@ export function generateQuotePdf(inputs: EstimateInputs, results: EstimateResult
     styles: { fontSize: 10 },
   })
 
-  const afterDetails = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8
+  let afterDetails = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8
+
+  const enabledSpecialty = inputs.specialtyServices.filter((s) => s.enabled)
+  const scopeLines = [
+    ...(enabledSpecialty.length
+      ? [`Additional services: ${enabledSpecialty.map((s) => s.name).join(', ')}`]
+      : []),
+    ...scopeNotes,
+  ]
+  if (scopeLines.length > 0) {
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(10)
+    doc.setTextColor(20, 20, 20)
+    doc.text('Scope of Service', 14, afterDetails)
+    doc.setFont('helvetica', 'normal')
+    let scopeY = afterDetails + 5
+    for (const line of scopeLines) {
+      doc.text(`• ${line}`, 14, scopeY, { maxWidth: 180 })
+      scopeY += 5
+    }
+    afterDetails = scopeY + 3
+  }
 
   autoTable(doc, {
     startY: afterDetails,

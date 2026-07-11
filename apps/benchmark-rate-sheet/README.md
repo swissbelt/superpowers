@@ -54,9 +54,16 @@ to `localStorage`.
 
   Generating an estimate also auto-saves it as an "AI Recommended" scenario
   (Scenarios tab) so later manual adjustments can be compared against the
-  as-imported numbers, and populates a **Bid Analysis Summary** card (labor
-  hours/week, monthly cost, recommended bid, margin, risk factors) shown in
-  the Estimator and included in the Internal Cost Breakdown PDF export.
+  as-imported numbers, and populates two cards in the Estimator: a plain-
+  language **Job Summary** (what the job actually involves — building,
+  frequency, specialty services with their detected frequency, supplies
+  responsibility, staffing, contract type/term, plus any scope/staffing/
+  hours context from the import) and a **Bid Analysis Summary** (labor
+  hours/week, monthly cost, recommended bid, margin, risk factors). The Job
+  Summary is always available (built from the current inputs, whether from
+  an import or manual entry) and its scope-of-service content is also
+  folded into the Professional PDF Quote; the Bid Analysis Summary's risk
+  factors are folded into the Internal Cost Breakdown PDF.
 
   This is plain text/regex matching, not an LLM call (the app has no
   backend and needs none — there's nothing to call out to), so it works

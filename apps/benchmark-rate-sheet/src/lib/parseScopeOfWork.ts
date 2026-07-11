@@ -421,3 +421,18 @@ export function buildRiskNotes(extraction: ScopeOfWorkExtraction): string[] {
 
   return notes
 }
+
+/** Turns non-risk scope/context signals into plain-English notes for the job summary. */
+export function buildScopeNotes(extraction: ScopeOfWorkExtraction): string[] {
+  const { contextual } = extraction
+  const notes: string[] = []
+
+  if (contextual.scopeTasks?.value.length)
+    notes.push(`Scope tasks: ${contextual.scopeTasks.value.join(', ')}`)
+  if (contextual.numberOfBuildings?.value) notes.push(`Spans ${contextual.numberOfBuildings.value} buildings`)
+  if (contextual.operatingHours?.value) notes.push(`Operating hours: ${contextual.operatingHours.value}`)
+  if (contextual.occupancyType?.value) notes.push(`Occupancy: ${contextual.occupancyType.value}`)
+  if (contextual.minimumStaffing?.value) notes.push(`Minimum staffing: ${contextual.minimumStaffing.value}`)
+
+  return notes
+}
