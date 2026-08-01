@@ -38,6 +38,13 @@
     revealEls.forEach(function (el) {
       observer.observe(el);
     });
+    // Safety net: never let content stay invisible because of a missed
+    // intersection event (fast scroll, unusual scroll container, etc.).
+    setTimeout(function () {
+      document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (el) {
+        el.classList.add("is-visible");
+      });
+    }, 1800);
   } else {
     revealEls.forEach(function (el) {
       el.classList.add("is-visible");
