@@ -52,23 +52,76 @@
   }
 
   // Inquiry forms (Request a Quote / Apply to Partner)
-  // NOTE: no backend is wired up yet. On submit this validates the native
-  // HTML5 constraints and shows a confirmation message in place of the form.
-  // Connect the `action` attribute (or replace this handler) once a form
-  // endpoint or email service is chosen.
+  // Submissions are saved to Supabase (see js/config.js and sql/schema.sql).
+  // Until js/config.js is filled in with a real project URL/key, submitting
+  // shows a friendly "not configured yet" message instead of failing silently.
   document.querySelectorAll("form[data-inquiry-form]").forEach(function (form) {
+    var panel = form.parentElement;
+    var success = panel.querySelector(".form-success");
+    var errorEl = panel.querySelector(".form-error");
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    function showError(message) {
+      if (!errorEl) return;
+      errorEl.textContent = message;
+      errorEl.classList.add("is-visible");
+      errorEl.focus();
+    }
+
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
-      var success = form.parentElement.querySelector(".form-success");
-      form.hidden = true;
-      if (success) {
-        success.classList.add("is-visible");
-        success.focus();
+
+      var config = window.BCS_SUPABASE_CONFIG;
+      if (!config || !config.url || config.url.indexOf("YOUR_SUPABASE") === 0) {
+        showError(
+          "This form isn't connected to a database yet. Please contact BCS directly, or see sql/schema.sql to finish setup."
+        );
+        return;
       }
+
+      var data = new FormData(form);
+      var payload = {
+        form_type: form.dataset.formType,
+        name: data.get("name") || null,
+        email: data.get("email") || null,
+        phone: data.get("phone") || null,
+        company_or_agency: data.get("agency") || data.get("company") || null,
+        title: data.get("title") || null,
+        service: data.get("service") || null,
+        trade: data.get("trade") || null,
+        service_area: data.get("area") || null,
+        message: data.get("message") || null,
+      };
+
+      if (errorEl) errorEl.classList.remove("is-visible");
+      if (submitBtn) submitBtn.disabled = true;
+
+      fetch(config.url.replace(/\/$/, "") + "/rest/v1/submissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: config.anonKey,
+          Authorization: "Bearer " + config.anonKey,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then(function (response) {
+          if (!response.ok) throw new Error("Submission failed with status " + response.status);
+          form.hidden = true;
+          if (success) {
+            success.classList.add("is-visible");
+            success.focus();
+          }
+        })
+        .catch(function () {
+          if (submitBtn) submitBtn.disabled = false;
+          showError("Something went wrong submitting your request. Please try again, or contact BCS directly.");
+        });
     });
   });
 

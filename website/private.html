@@ -155,7 +155,7 @@
         <span class="eyebrow">Request a Quote</span>
         <h2>Tell us about your property</h2>
         <p>Share a few details and BCS will follow up to scope your service needs.</p>
-        <form data-inquiry-form novalidate>
+        <form data-inquiry-form data-form-type="private_quote" novalidate>
           <div class="form-grid">
             <div class="form-field">
               <label for="priv-name">Full Name</label>
@@ -196,6 +196,7 @@
           </div>
         </form>
         <div class="form-success" role="status" tabindex="-1">Thank you. Your request has been received. BCS will follow up shortly.</div>
+        <div class="form-error" role="alert" tabindex="-1"></div>
       </div>
     </div>
   </section>
@@ -245,6 +246,7 @@
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

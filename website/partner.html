@@ -134,7 +134,7 @@
         <span class="eyebrow">Apply to Partner</span>
         <h2>Start your application</h2>
         <p>Tell us about your business. BCS will review your application against the Four-Gate Screening Process and follow up.</p>
-        <form data-inquiry-form novalidate>
+        <form data-inquiry-form data-form-type="partner_application" novalidate>
           <div class="form-grid">
             <div class="form-field">
               <label for="pt-name">Full Name</label>
@@ -179,6 +179,7 @@
           </div>
         </form>
         <div class="form-success" role="status" tabindex="-1">Thank you. Your application has been received. BCS will follow up shortly.</div>
+        <div class="form-error" role="alert" tabindex="-1"></div>
       </div>
     </div>
   </section>
@@ -228,6 +229,7 @@
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
